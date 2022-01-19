@@ -15,8 +15,8 @@ def test_abs():
 def test_pow():
     assert my_pow(10, 10) == 10 ** 10
     assert my_pow(10, -10) == 10 ** -10
-    assert my_pow(3.2, 5) == 3.2 ** -10
-    assert my_pow(2, -2) == 3.2 ** -10
+    assert my_pow(3.2, 5) == 3.2 ** 5
+    assert my_pow(2, -2) == 2 ** -2
     assert my_pow(100, 0) == 1
 
 
