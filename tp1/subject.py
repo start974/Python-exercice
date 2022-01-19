@@ -25,16 +25,6 @@ def my_abs(x: int) -> int:
     pass
 
 
-def my_bool(a: T) -> bool:
-    """
-    convertie un objet en bool
-    (attention de pensée a plusieur type et que signifie True et False dans le type)
-    :param a: object to convert
-    :return: boolean
-    """
-    pass
-
-
 def my_pow(a: float, b: int) -> float:
     """
     fait le calcul de a^b
@@ -52,7 +42,7 @@ def my_pow(a: float, b: int) -> float:
 def my_all(l: list[T]) -> bool:
     """
     renvoie vrais si chaque élément de la liste est True
-    :key: (utilisé `my_bool(x)` pour convertir un élément x en booléen )
+    :key: (utilisé `bool(x)` pour convertir un élément x en booléen )
     :param l: list à itéré
     :return: bool
     """

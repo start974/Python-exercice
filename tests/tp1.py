@@ -12,30 +12,6 @@ def test_abs():
     assert my_abs(-1) == 1
 
 
-def test_bool():
-    assert my_bool(1) == True
-    assert my_bool(0) == False
-    assert my_bool(-1) == True
-
-    assert my_bool(1.) == True
-    assert my_bool(0.) == False
-    assert my_bool(-1.) == True
-
-    assert my_bool([]) == False
-    assert my_bool([1, 2]) == True
-
-    assert my_bool("") == False
-    assert my_bool("test") == True
-
-    assert my_bool({}) == False
-    assert my_bool({"a": 1}) == True
-
-    assert my_bool(tuple()) == False
-    assert my_bool((1, 2)) == True
-
-    assert my_bool(None) == False
-
-
 def test_pow():
     assert my_pow(10, 10) == 10 ** 10
     assert my_pow(10, -10) == 10 ** -10
