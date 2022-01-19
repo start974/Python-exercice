@@ -22,7 +22,7 @@ def my_abs(x: int) -> int:
     :param x: entier a traiter
     :return: |x|
     """
-    pass
+    return x if x > 0 else -x
 
 
 def my_bool(a: T) -> bool:
