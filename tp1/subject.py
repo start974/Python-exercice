@@ -83,7 +83,11 @@ def my_max(l: list[int], default: Optional[int] = None) -> int:
     :param default: TODO
     :return: entier le plus grand
     """
-    pass
+    res = default
+    for x in l:
+        if x > res:
+            res = x
+    return res
 
 
 def my_min(l: list[int], default: Optional[int] = None) -> int:
@@ -93,7 +97,11 @@ def my_min(l: list[int], default: Optional[int] = None) -> int:
     :param default: TODO
     :return: entier le plus grand
     """
-    pass
+    res = default
+    for x in l:
+        if x < res:
+            res = x
+    return res
 
 
 def my_sum(l: list[int], start: int = 0) -> int:
