@@ -13,11 +13,17 @@ def test_abs():
 
 
 def test_pow():
+    def is_close(a, b, eps=1E-4):
+        return abs(a - b) <= eps
+
     assert my_pow(10, 10) == 10 ** 10
     assert my_pow(10, -10) == 10 ** -10
-    assert my_pow(3.2, 5) == 3.2 ** -10
-    assert my_pow(2, -2) == 3.2 ** -10
+    assert my_pow(2, -2) == 2 ** -2
+
+    assert is_close(my_pow(3.2, 5), 3.2 ** 5)
+
     assert my_pow(100, 0) == 1
+
 
 
 def test_all():
@@ -37,20 +43,20 @@ def test_any():
     assert my_any([False] * 20) == False
     assert my_any([False] * 20 + [True] * 5 + [False] * 5) == True
     assert my_any([]) == False
-    assert my_all(list(range(1, 25))) == True
-    assert my_all(list(range(25))) == True
-    assert my_all(list("this is also a string")) == True
+    assert my_any(list(range(1, 25))) == True
+    assert my_any(list(range(25))) == True
+    assert my_any(list("this is also a string")) == True
 
 
 def test_max():
     s = randint(0, 200)
     e = randint(0, s)
     l = list(range(s, e))
-    assert my_max(l_shuf) == e
+    assert my_max(l) == e
     reversed(l)
-    assert my_max(l_shuf) == e
+    assert my_max(l) == e
     shuffle(l)
-    assert my_max(l_shuf) == e
+    assert my_max(l) == e
 
     assert my_max([], 42) == 42
     assert my_max([]) is None
@@ -60,11 +66,11 @@ def test_min():
     s = randint(0, 200)
     e = randint(0, s)
     l = list(range(s, e))
-    assert my_min(l_shuf) == s
+    assert my_min(l) == s
     reversed(l)
-    assert my_min(l_shuf) == s
+    assert my_min(l) == s
     shuffle(l)
-    assert my_min(l_shuf) == s
+    assert my_min(l) == s
 
     assert my_min([], 42) == 42
     assert my_min([]) is None
