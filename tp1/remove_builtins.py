@@ -1,5 +1,4 @@
 abs = \
-    bool = \
     pow = \
     all = \
     any = \
