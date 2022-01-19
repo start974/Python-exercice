@@ -32,7 +32,18 @@ def my_pow(a: float, b: int) -> float:
     :param b: entier de puissance (peut etre négatif)
     :return: a ^ b
     """
-    pass
+    neg = b < 0
+    if neg:
+        b = my_abs(b)
+    res = 1
+    while b != 0:
+        if b % 2 == 1:
+            res *= a
+        a *= a
+        b //= 2
+    if neg:
+        return 1 / res
+    return res
 
 
 # --------------------------------------------------
