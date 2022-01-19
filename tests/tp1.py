@@ -25,7 +25,6 @@ def test_pow():
     assert my_pow(100, 0) == 1
 
 
-
 def test_all():
     assert my_all([True] * 20) == True
     assert my_all([True] * 20 + [False] + [True] * 10) == False
@@ -49,9 +48,9 @@ def test_any():
 
 
 def test_max():
-    s = randint(0, 200)
-    e = randint(0, s)
-    l = list(range(s, e))
+    e = randint(0, 200)
+    s = randint(0, e)
+    l = list(range(s, e + 1))
     assert my_max(l) == e
     reversed(l)
     assert my_max(l) == e
@@ -63,9 +62,9 @@ def test_max():
 
 
 def test_min():
-    s = randint(0, 200)
-    e = randint(0, s)
-    l = list(range(s, e))
+    e = randint(0, 200)
+    s = randint(0, e)
+    l = list(range(s, e + 1))
     assert my_min(l) == s
     reversed(l)
     assert my_min(l) == s
@@ -74,6 +73,19 @@ def test_min():
 
     assert my_min([], 42) == 42
     assert my_min([]) is None
+
+
+def test_sum():
+    e = randint(0, 200)
+    s = randint(0, e)
+    l = list(range(s, e))
+    res = sum(l)
+    assert my_sum(l) == res
+    reversed(l)
+    assert my_sum(l) == res
+    shuffle(l)
+    assert my_sum(l) == res
+    assert my_sum(l, 10) == res + 10
 
 
 def test_len():
@@ -89,8 +101,8 @@ def test_len():
 
 
 def test_reverse():
-    s = randint(0, 200)
-    e = randint(0, s)
+    e = randint(0, 200)
+    s = randint(0, e)
     l = list(range(s, e))
 
     lr = l[:]
@@ -106,7 +118,7 @@ def test_reverse():
 def test_range():
     assert my_range(0, 10, 1) == list(range(0, 10, 1))
     assert my_range(0, 10, 2) == list(range(0, 10, 2))
-    assert my_range(10, 2, -1) == list(range(10, 10, -1))
+    assert my_range(10, 2, -1) == list(range(10, 2, -1))
     assert my_range(10, 2, -2) == list(range(10, 2, -2))
     assert my_range(10, 10, 1) == list(range(10, 10, 1))
     assert my_range(10) == list(range(10))
@@ -120,7 +132,7 @@ def test_range():
 def test_zip():
     l2 = list(ascii_lowercase)
     l1 = list(range(1, len(ascii_lowercase) + 1))
-    lr = zip(l1, l2)
+    lr = list(zip(l1, l2))
 
     assert my_zip(l1, l2) == lr
     assert my_zip(l1[:10], l2) == lr[:10]
@@ -136,6 +148,17 @@ def test_enumerate():
     assert my_enumerate(l, 0) == list(enumerate(l, 0))
     assert my_enumerate(l, 10) == list(enumerate(l, 10))
     assert my_enumerate([]) == []
+
+
+def test_splice():
+    l = list(range(25))
+
+    assert my_slice(l, 0, len(l)) == l
+    assert my_slice(l, 0) == l
+    assert my_slice(l, 1, 10) == l[1:10]
+    assert my_slice(l, 1, 10, 2) == l[1:10:2]
+    assert my_slice(l, 1, -1) == l[1:-1]
+    assert my_slice(l, -3, -1) == l[-3:-1]
 
 
 def test_filter():
@@ -176,8 +199,8 @@ def test_bin():
     i = randint(0, i * 10)
     assert my_bin(i) == bin(i)[2:]
 
-    with pytest.raises(IsNegativeExeception):
-        my_bin(-10)
+    with pytest.raises(IsNegativeException):
+            my_bin(-10)
 
 
 def test_hexa():
@@ -194,7 +217,7 @@ def test_hexa():
     i = randint(0, i * 10)
     assert my_hex(i) == hex(i)[2:]
 
-    with pytest.raises(IsNegativeExeception):
+    with pytest.raises(IsNegativeException):
         my_hex(-100)
 
 
@@ -206,7 +229,7 @@ def test_bin_to_int():
 
     def get_rand_bin(end):
         i = randint(0, end)
-        return i, bin(i)[:2]
+        return i, bin(i)[2:]
 
     v, b = get_rand_bin(16)
     assert my_bin_to_int(b) == v
@@ -219,20 +242,20 @@ def test_bin_to_int():
 
 
 def test_bin_to_hex():
-    assert my_bin_to_hex("0") == 0
-    assert my_bin_to_hex("1") == 1
-    assert my_bin_to_int("c") == 12
-    assert my_bin_to_int("11") == 19
+    assert my_hex_to_int("0") == 0
+    assert my_hex_to_int("1") == 1
+    assert my_hex_to_int("c") == 12
+    assert my_hex_to_int("15") == 21
 
     def get_rand_hex(end):
         i = randint(0, end)
-        return i, hex(i)[:2]
+        return i, hex(i)[2:]
 
     v, b = get_rand_hex(32)
-    assert my_bin_to_hex(b) == v
+    assert my_hex_to_int(b) == v
 
     v, b = get_rand_hex(246)
-    assert my_bin_to_int(b) == v
+    assert my_hex_to_int(b) == v
 
     v, b = get_rand_hex(v * 10)
-    assert my_bin_to_int(b) == v
+    assert my_hex_to_int(b) == v

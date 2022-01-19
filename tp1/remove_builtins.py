@@ -10,7 +10,6 @@ abs = \
     range = \
     zip = \
     enumerate = \
-    slice = \
     filter = \
     map = \
     bin = \
