@@ -13,11 +13,17 @@ def test_abs():
 
 
 def test_pow():
+    def is_close(a, b, eps=1E-4):
+        return abs(a - b) <= eps
+
     assert my_pow(10, 10) == 10 ** 10
     assert my_pow(10, -10) == 10 ** -10
-    assert my_pow(3.2, 5) == 3.2 ** 5
     assert my_pow(2, -2) == 2 ** -2
+
+    assert is_close(my_pow(3.2, 5), 3.2 ** 5)
+
     assert my_pow(100, 0) == 1
+
 
 
 def test_all():
