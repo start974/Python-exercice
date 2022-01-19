@@ -22,7 +22,7 @@ def my_abs(x: int) -> int:
     :param x: entier a traiter
     :return: |x|
     """
-    return x if x > 0 else -x
+    pass
 
 
 def my_pow(a: float, b: int) -> float:
@@ -32,18 +32,7 @@ def my_pow(a: float, b: int) -> float:
     :param b: entier de puissance (peut etre négatif)
     :return: a ^ b
     """
-    neg = b < 0
-    if neg:
-        b = my_abs(b)
-    res = 1
-    while b != 0:
-        if b % 2 == 1:
-            res *= a
-        a *= a
-        b //= 2
-    if neg:
-        return 1 / res
-    return res
+    pass
 
 
 # --------------------------------------------------
@@ -57,10 +46,7 @@ def my_all(l: list[T]) -> bool:
     :param l: list à itéré
     :return: bool
     """
-    for x in l:
-        if not bool(x):
-            return False
-    return True
+    pass
 
 
 def my_any(l: list[T]) -> bool:
@@ -70,10 +56,7 @@ def my_any(l: list[T]) -> bool:
     :param l: list à itéré
     :return: bool
     """
-    for x in l:
-        if bool(x):
-            return True
-    return False
+    pass
 
 
 def my_max(l: list[int], default: Optional[int] = None) -> int:
@@ -83,13 +66,7 @@ def my_max(l: list[int], default: Optional[int] = None) -> int:
     :param default: TODO
     :return: entier le plus grand
     """
-    if not l:
-        return default
-    res = l[0]
-    for x in l:
-        if x > res:
-            res = x
-    return res
+    pass
 
 
 def my_min(l: list[int], default: Optional[int] = None) -> int:
@@ -99,13 +76,7 @@ def my_min(l: list[int], default: Optional[int] = None) -> int:
     :param default: TODO
     :return: entier le plus grand
     """
-    if not l:
-        return default
-    res = l[0]
-    for x in l:
-        if x < res:
-            res = x
-    return res
+    pass
 
 
 def my_sum(l: list[int], start: int = 0) -> int:
@@ -115,10 +86,7 @@ def my_sum(l: list[int], start: int = 0) -> int:
     :param start: valeur de base
     :return: somme des éléments
     """
-    res = start
-    for x in l:
-        res += x
-    return res
+    pass
 
 
 def my_len(a: Iterable) -> int:
@@ -128,10 +96,7 @@ def my_len(a: Iterable) -> int:
     :return: longueur de l'intérable
     :key: TODO: Est ce que votre fonction fonctionne aussi pour toute structure itérable (dictionaire, tupple ...)?
     """
-    res = 0
-    for _ in a:
-        res += 1
-    return res
+    pass
 
 
 def my_reverse(l: list[T]) -> list[T]:
@@ -140,10 +105,7 @@ def my_reverse(l: list[T]) -> list[T]:
     :param l: list a inversé
     :return: list iverse
     """
-    res = []
-    for x in l:
-        res.insert(0, x)
-    return res
+    pass
 
 
 def my_range_tmp(start: int, stop: int, step: int) -> list[int]:
@@ -155,16 +117,7 @@ def my_range_tmp(start: int, stop: int, step: int) -> list[int]:
     :param step: pas entre 2 nombre
     :return: une list d'entier de ]start, stop[ avec un pas de step
     """
-    if (stop - start) * step < 0:
-        return []
-    inv = start > stop
-    if inv:
-        stop -= step
-    res = []
-    while (start < stop) == (not inv):
-        res.append(start)
-        start += step
-    return res
+    pass
 
 
 def my_range(a: int, b: int = None, c: int = 1) -> list[int]:
@@ -178,9 +131,7 @@ def my_range(a: int, b: int = None, c: int = 1) -> list[int]:
     range(1, 10)
     range(1, 20, 30)
     """
-    if b is None:
-        return my_range_tmp(0, a, c)
-    return my_range_tmp(a, b, c)
+    pass
 
 
 def my_zip(l1: list[T], l2: list[U]) -> list[tuple[T, U]]:
@@ -190,10 +141,7 @@ def my_zip(l1: list[T], l2: list[U]) -> list[tuple[T, U]]:
     :param l2: seconde liste
     :return: liste de tupple
     """
-    res = []
-    for i in my_range(my_min([my_len(l1), my_len(l2)])):
-        res.append((l1[i], l2[i]))
-    return res
+    pass
 
 
 def my_enumerate(l: list[T], start: int = 0) -> list[tuple[int, T]]:
@@ -206,7 +154,7 @@ def my_enumerate(l: list[T], start: int = 0) -> list[tuple[int, T]]:
     :param start: debut des indice
     :return: list of tupple index, elements
     """
-    return my_zip(my_range(start, my_len(l) + start), l)
+    pass
 
 
 def my_slice(l: list[T], start: int, stop: int = None, step: int = 1) -> list[T]:
@@ -221,17 +169,7 @@ def my_slice(l: list[T], start: int, stop: int = None, step: int = 1) -> list[T]
     :param step: pas entre chaque indicde
     :return: copie de la list couper
     """
-    len_l = my_len(l)
-    if stop is None:
-        stop = len_l
-    elif stop < 0:
-        stop += len_l
-    if start < 0:
-        start += len_l
-    res = []
-    for i in my_range(start, stop, step):
-        res.append(l[i])
-    return res
+    pass
 
 
 def my_filter(predicate: Callable[[T], bool], l: list[T]) -> list[T]:
@@ -243,11 +181,7 @@ def my_filter(predicate: Callable[[T], bool], l: list[T]) -> list[T]:
     :param l: list a filtré
     :return: list des élément filtré
     """
-    res = []
-    for x in l:
-        if predicate(x):
-            res.append(x)
-    return res
+    pass
 
 
 def my_map(f: Callable[[T], U], l: list[T]) -> list[U]:
@@ -259,10 +193,7 @@ def my_map(f: Callable[[T], U], l: list[T]) -> list[U]:
     :param l: list a convertir
     :return: list des élément filtré
     """
-    res = []
-    for x in l:
-        res.append(f(x))
-    return res
+    pass
 
 
 # --------------------------------------------------
@@ -278,17 +209,10 @@ def my_bin(i: int) -> str:
     :return: binaire correspondant
     :raise: ISNegativeException si i est négatif
     """
-    if i < 0:
-        raise IsNegativeException()
-    if i == 0:
-        return "0"
-    res = ""
-    while i > 0:
-        res = "01"[i % 2] + res
-        i //= 2
-    return res
+    pass
 
-string_hexa = "".join(my_map(str, my_range(10))) + "abcdef"
+
+string_hexa = "0123456789abcdef"
 
 
 def my_hex(i: int) -> str:
@@ -300,16 +224,7 @@ def my_hex(i: int) -> str:
     :return: hexadécimal correspondant
     :raise: ISNegativeException si i est négatif
     """
-    if i < 0:
-        raise IsNegativeException()
-    if i == 0:
-        return "0"
-
-    res = ""
-    while i > 0:
-        res = string_hexa[i % 16] + res
-        i //= 16
-    return res
+    pass
 
 
 def my_bin_to_int(s: str) -> int:
@@ -318,13 +233,7 @@ def my_bin_to_int(s: str) -> int:
     :param s: string d'un binaire positif à convertir en base 10
     :return: entier en base 10
     """
-    maping = {"0": 0, "1": 1}
-    coef = 1
-    res = 0
-    for x in my_reverse(list(s)):
-        res += maping[x] * coef
-        coef *= 2
-    return res
+    pass
 
 
 def my_hex_to_int(s: str) -> int:
@@ -333,10 +242,4 @@ def my_hex_to_int(s: str) -> int:
     :param s: string d'un hexadécimal positif à convertir en base 10
     :return: entier en base 10
     """
-    maping = {k: v for (v, k) in my_enumerate(list(string_hexa))}
-    coef = 1
-    res = 0
-    for x in my_reverse(list(s)):
-        res += maping[x] * coef
-        coef *= 16
-    return res
+    pass
