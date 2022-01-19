@@ -46,7 +46,10 @@ def my_all(l: list[T]) -> bool:
     :param l: list à itéré
     :return: bool
     """
-    pass
+    for x in l:
+        if not bool(x):
+            return False
+    return True
 
 
 def my_any(l: list[T]) -> bool:
@@ -56,7 +59,10 @@ def my_any(l: list[T]) -> bool:
     :param l: list à itéré
     :return: bool
     """
-    pass
+    for x in l:
+        if bool(x):
+            return True
+    return False
 
 
 def my_max(l: list[int], default: Optional[int] = None) -> int:
