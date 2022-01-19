@@ -1,0 +1,20 @@
+abs = \
+    bool = \
+    pow = \
+    all = \
+    any = \
+    max = \
+    min = \
+    sum = \
+    len = \
+    reversed = \
+    range = \
+    zip = \
+    enumerate = \
+    slice = \
+    filter = \
+    map = \
+    bin = \
+    hex = \
+    None
+int = lambda x: int(x)
