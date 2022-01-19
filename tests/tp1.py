@@ -52,11 +52,11 @@ def test_max():
     s = randint(0, 200)
     e = randint(0, s)
     l = list(range(s, e))
-    assert my_max(l_shuf) == e
+    assert my_max(l) == e
     reversed(l)
-    assert my_max(l_shuf) == e
+    assert my_max(l) == e
     shuffle(l)
-    assert my_max(l_shuf) == e
+    assert my_max(l) == e
 
     assert my_max([], 42) == 42
     assert my_max([]) is None
@@ -66,11 +66,11 @@ def test_min():
     s = randint(0, 200)
     e = randint(0, s)
     l = list(range(s, e))
-    assert my_min(l_shuf) == s
+    assert my_min(l) == s
     reversed(l)
-    assert my_min(l_shuf) == s
+    assert my_min(l) == s
     shuffle(l)
-    assert my_min(l_shuf) == s
+    assert my_min(l) == s
 
     assert my_min([], 42) == 42
     assert my_min([]) is None
