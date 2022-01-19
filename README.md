@@ -1,7 +1,8 @@
 # Python-exercice
 
 This repository contain few exercies on Python.\
-Subject is in directory TD_** and it is write in French. All correction is in branch (correction)[]
+Subject is in directory TD_** and it is write in French. All correction is in branch 
+[correction](https://github.com/start974/Python-exercice/tree/correction)
 
 ## Setup environement
 
