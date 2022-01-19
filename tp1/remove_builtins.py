@@ -1,5 +1,4 @@
 abs = \
-    bool = \
     pow = \
     all = \
     any = \
@@ -11,7 +10,6 @@ abs = \
     range = \
     zip = \
     enumerate = \
-    slice = \
     filter = \
     map = \
     bin = \

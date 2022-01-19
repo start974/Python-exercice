@@ -25,16 +25,6 @@ def my_abs(x: int) -> int:
     pass
 
 
-def my_bool(a: T) -> bool:
-    """
-    convertie un objet en bool
-    (attention de pensée a plusieur type et que signifie True et False dans le type)
-    :param a: object to convert
-    :return: boolean
-    """
-    pass
-
-
 def my_pow(a: float, b: int) -> float:
     """
     fait le calcul de a^b
@@ -52,7 +42,7 @@ def my_pow(a: float, b: int) -> float:
 def my_all(l: list[T]) -> bool:
     """
     renvoie vrais si chaque élément de la liste est True
-    :key: (utilisé `my_bool(x)` pour convertir un élément x en booléen )
+    :key: (utilisé `bool(x)` pour convertir un élément x en booléen )
     :param l: list à itéré
     :return: bool
     """
@@ -130,7 +120,7 @@ def my_range_tmp(start: int, stop: int, step: int) -> list[int]:
     pass
 
 
-def my_range(a: int, b: int, c: int) -> list[int]:
+def my_range(a: int, b: int = None, c: int = 1) -> list[int]:
     """
     Cette fonction colle a au range classique.
     Merci de regarder la documentation avec la commande "help(range)"
@@ -154,7 +144,7 @@ def my_zip(l1: list[T], l2: list[U]) -> list[tuple[T, U]]:
     pass
 
 
-def my_enumerate(l: list[T], start: int) -> list[tuple[int, T]]:
+def my_enumerate(l: list[T], start: int = 0) -> list[tuple[int, T]]:
     """
     similaire a "enumerate"
     crée une list de tupple avec l'indice et le suivit de l'élément
@@ -167,14 +157,15 @@ def my_enumerate(l: list[T], start: int) -> list[tuple[int, T]]:
     pass
 
 
-def slice(l: list[T], start: int, stop: int, step: int = 1) -> list[T]:
+def my_slice(l: list[T], start: int, stop: int = None, step: int = 1) -> list[T]:
     """
     revoie la copie de la liste de l'indice start a stop
     si stop est supérieur a la list on s'arrete avant
     :key: eauivalent to l[start:stop:step]
+    :key: attention les nombres négatif sont possible
     :param l: list a couper
     :param start: indice de début
-    :param stop: indice de fin
+    :param stop: indice de fin (si step est None prendre len(l))
     :param step: pas entre chaque indicde
     :return: copie de la list couper
     """
@@ -209,7 +200,6 @@ def my_map(f: Callable[[T], U], l: list[T]) -> list[U]:
 # |             conversion de nombre               |
 # --------------------------------------------------
 
-
 def my_bin(i: int) -> str:
     """
     renvoie une string correspondant à l'entier en binaire donnée en argument
@@ -220,6 +210,9 @@ def my_bin(i: int) -> str:
     :raise: ISNegativeException si i est négatif
     """
     pass
+
+
+string_hexa = "0123456789abcdef"
 
 
 def my_hex(i: int) -> str:
