@@ -2,7 +2,7 @@ with import <nixpkgs> {};
 stdenv.mkDerivation {
   name = "Python-Exercice";
   buildInputs = with pkgs; [
-    python3
+    python310
     pipenv
   ];
     shellHook = ''
