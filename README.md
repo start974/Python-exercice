@@ -28,3 +28,12 @@ $ pipenv run pytest tests/tp*.py
 
 Objectives recreate some pythons [builtins](https://docs.python.org/3/library/functions.html) functions.
 The subject file is [tp1/subject.py](tp1/subject.py)
+
+### [TP1](tp1/subject.py) -- Base converter
+Objectives is to convert positives number between base 10, 16, 2
+
+Make function to convert :
+- Base 10 -> binary
+- Base 10 -> hexadecimal
+- binary -> Base 10
+- hexadecimal -> Base 10

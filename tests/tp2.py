@@ -5,19 +5,6 @@ from string import ascii_lowercase
 import pytest
 
 
-def test_map():
-    s = randint(0, 200)
-    e = randint(0, s)
-    l = list(range(s, e))
-    pred = lambda x: x * 2
-
-    assert my_map(pred, l) == list(map(pred, l))
-    shuffle(l)
-    assert my_map(pred, l) == list(map(pred, l))
-
-    assert my_map(pred, []) == []
-
-
 def test_bin():
     assert my_bin(0) == "0"
     assert my_bin(2) == "10"
@@ -33,7 +20,7 @@ def test_bin():
     assert my_bin(i) == bin(i)[2:]
 
     with pytest.raises(IsNegativeException):
-            my_bin(-10)
+        my_bin(-10)
 
 
 def test_hexa():
