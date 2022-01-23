@@ -31,8 +31,7 @@ def my_pow(a: float, b: int) -> float:
     :param b: entier de puissance (peut etre négatif)
     :return: a ^ b
     """
-    neg = b < 0
-    if neg:
+    if neg := b < 0:
         b = my_abs(b)
     res = 1
     while b != 0:
@@ -40,9 +39,7 @@ def my_pow(a: float, b: int) -> float:
             res *= a
         a *= a
         b //= 2
-    if neg:
-        return 1 / res
-    return res
+    return 1 / res if neg else res
 
 
 # --------------------------------------------------
@@ -56,8 +53,8 @@ def my_all(l: list[T]) -> bool:
     :param l: list à itéré
     :return: bool
     """
-    for x in l:
-        if not bool(x):
+    for elm in l:
+        if not elm:
             return False
     return True
 
@@ -69,8 +66,8 @@ def my_any(l: list[T]) -> bool:
     :param l: list à itéré
     :return: bool
     """
-    for x in l:
-        if bool(x):
+    for elm in l:
+        if elm:
             return True
     return False
 
@@ -113,8 +110,8 @@ def my_sum(l: list[int], start: int = 0) -> int:
     :return: somme des éléments
     """
     res = start
-    for x in l:
-        res += x
+    for elm in l:
+        res += elm
     return res
 
 
@@ -155,8 +152,7 @@ def my_range_tmp(start: int, stop: int, step: int) -> list[int]:
     """
     if (stop - start) * step < 0:
         return []
-    inv = start > stop
-    if inv:
+    if inv := start > stop:
         stop -= step
     res = []
     while (start < stop) == (not inv):
@@ -176,9 +172,11 @@ def my_range(a: int, b: int = None, c: int = 1) -> list[int]:
     range(1, 10)
     range(1, 20, 30)
     """
-    if b is None:
-        return my_range_tmp(0, a, c)
-    return my_range_tmp(a, b, c)
+    match b:
+        case None:
+            return my_range_tmp(0, a, c)
+        case _:
+            return my_range_tmp(a, b, c)
 
 
 def my_zip(l1: list[T], l2: list[U]) -> list[tuple[T, U]]:
@@ -188,10 +186,7 @@ def my_zip(l1: list[T], l2: list[U]) -> list[tuple[T, U]]:
     :param l2: seconde liste
     :return: liste de tupple
     """
-    res = []
-    for i in my_range(my_min([my_len(l1), my_len(l2)])):
-        res.append((l1[i], l2[i]))
-    return res
+    return [(l1[i], l2[i]) for i in my_range(my_min([my_len(l1), my_len(l2)]))]
 
 
 def my_enumerate(l: list[T], start: int = 0) -> list[tuple[int, T]]:
@@ -226,10 +221,7 @@ def my_slice(l: list[T], start: int, stop: int = None, step: int = 1) -> list[T]
         stop += len_l
     if start < 0:
         start += len_l
-    res = []
-    for i in my_range(start, stop, step):
-        res.append(l[i])
-    return res
+    return [l[i] for i in my_range(start, stop, step)]
 
 
 def my_filter(predicate: Callable[[T], bool], l: list[T]) -> list[T]:
@@ -240,6 +232,8 @@ def my_filter(predicate: Callable[[T], bool], l: list[T]) -> list[T]:
     :param predicate: predicat a utiliser (T -> bool)
     :param l: list a filtré
     :return: list des élément filtré
+    :key: on utilise pas les comprehension de python (ce serais trop simple)
+         [x for x in l if predicate(x)]
     """
     res = []
     for x in l:
@@ -256,6 +250,8 @@ def my_map(f: Callable[[T], U], l: list[T]) -> list[U]:
     :param f: fonction de convertion (T -> U)
     :param l: list a convertir
     :return: list des élément filtré
+    :key: on utilise pas les comprehension de python (ce serais trop simple)
+         [f(x) for x in l]
     """
     res = []
     for x in l:
