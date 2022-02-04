@@ -49,3 +49,29 @@ def test_crack_cesar():
     assert crack_cesar("Lj xtqjnq jxy gjfz.") == (5, "Le soleil est beau.")
     assert crack_cesar(au_clair_de_la_lune) == (0, au_clair_de_la_lune)
     assert crack_cesar(au_clair_de_la_lune_5) == (5, au_clair_de_la_lune)
+
+
+def test_vigenere_cipher_example():
+    assert vigenere_cipher("Le soleil est beau.", "abc") == "Lf spnejn fut debw."
+
+
+au_clair_de_la_lune_vig = \
+    """
+    Ah nfnmc qi fn woai,
+    Msy nqt Pmplese,
+    Pcêgi-gbm nn afhqp
+    Psfl énlvvp hr gbx.
+    Me wueyxrpwy idn qzlgi,
+    Ji h'et cpfm hp sif ;
+    Ooivp-zst ge jbvey,
+    Pihv f'exihv xr Dcry.
+    """
+
+
+def test_vigenere_cipher():
+    assert vigenere_cipher(au_clair_de_la_lune, "lune") == au_clair_de_la_lune_vig
+
+
+def test_vigenere_decipher():
+    assert vigenere_decipher("Lf spnejn fut debw.", "abc") == "Le soleil est beau."
+    assert vigenere_decipher(au_clair_de_la_lune_vig, "lune") == au_clair_de_la_lune

@@ -8,7 +8,7 @@ Le but de ce tp est de voir des chiffrement/dechiffrement classique symétrique
 def cesar_cipher(text: str, key: int) -> str:
     """
     Le chiffrement césar est un chiffrement par décalage avec une clef:
-    https://fr.wikipedia.org/wiki/Chiffrement_par_d%C3%A9calage
+    https://fr.wikipedia.org/wiki/Chiffrement_par_d%C3%A9calageV
     
     Nous feront un décalage que sur les lettres se trouvant dans "ascii_lowercase"
     ascii_letters = "abcdefghijklmnopqrstuvwxyz"
@@ -130,3 +130,61 @@ def crack_cesar(text: str) -> (int, str):
             qte_min = qte
             solution = (i, cur_text)
     return solution
+
+
+"""
+Dans cette partie nous allons voir le chiffrage Vigenère
+https://fr.wikipedia.org/wiki/Chiffre_de_Vigen%C3%A8re
+"""
+
+
+def vigenere_cipher(text: str, key: str) -> str:
+    """
+    Le chiffrage vigenere est un peut plus complexe que celui de cesar.
+    Il comporte une clef de chifrement qui nous fera un décalage au fur et a mesure
+
+    Dans notre cas si un caractere non décaler consomme quand meme le décalage (var exemple).
+    Et le caractere "a" à un décalage de 1, le "b" de 2, etc...
+
+    Example: cesar_cipher("Le soleil est beau.", "abc") = "Lf spnejn fut debw."
+    Car:
+    Le soleil est beau.
+    abcabcabcabcabcabca
+    -------------------
+    Lf spnejn fut debw.
+
+    Le a nous fait un décalage de 1, le b de 2 et le c de 3
+
+    :key fonction utile
+    - ascii_letters.find(c)
+        -> premet d'avoir l'indice de la lettre dans la string ascii_letters (et donc le décalage d'une lettre)
+        -> cette meme fonction renvoie -1 si elle n'est pas trouvé
+    - la fonction modulo (%) sera aussi tres utile pour bouclé sur ascii_letters dans un décalage
+
+    :param text: text à chiffré
+    :param key: clef utilisé
+    :return: text chiffré
+    """
+    res = ""
+    for i_text, c in enumerate(text):
+        if (i_c := ascii_lowercase.find(c)) != -1:
+            k = ascii_lowercase.find(key[i_text % len(key)])
+            c = ascii_lowercase[(i_c + k) % len(ascii_lowercase)]
+        res += c
+    return res
+
+
+def vigenere_decipher(text: str, key: str) -> str:
+    """
+    dechiffre un message vigenere
+    :param text: text chiffré
+    :param key: clef a utilisé
+    :return: message déchiffré
+    """
+    res = ""
+    for i_text, c in enumerate(text):
+        if (i_c := ascii_lowercase.find(c)) != -1:
+            k = ascii_lowercase.find(key[i_text % len(key)])
+            c = ascii_lowercase[(i_c - k) % len(ascii_lowercase)] # il faut juste changer le signe de k
+        res += c
+    return res
