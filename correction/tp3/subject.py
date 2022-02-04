@@ -27,7 +27,15 @@ def cesar_cipher(text: str, key: int) -> str:
     :param key: décalage a faire
     :return: texter chiffré
     """
-    pass
+    if key % len(ascii_lowercase) == 0:
+        return text
+
+    res = ""
+    for c in text:
+        if (i := ascii_lowercase.find(c)) != -1:
+            c = ascii_lowercase[(i + key) % len(ascii_lowercase)]
+        res += c
+    return res
 
 
 def cesar_decipher(text: str, key: int) -> str:
@@ -37,7 +45,7 @@ def cesar_decipher(text: str, key: int) -> str:
     :param key: clef de chiffrage utilisé
     :return: text déchiffré
     """
-    pass
+    return cesar_cipher(text, -key)
 
 
 """
@@ -53,6 +61,14 @@ l_fth = [9.42, 1.02, 2.64, 3.39, 15.87, 0.95,
 fth = {letter: freq for (letter, freq) in zip(ascii_lowercase, l_fth)}
 
 
+def total_char(text: str) -> int:
+    count = 0
+    for s in text:
+        if s in ascii_lowercase:
+            count += 1
+    return count
+
+
 def frequency(text: str) -> dict[str, int]:
     """
     donne la fréquence de chaque lettre sous forme d'un dictionaire
@@ -65,7 +81,8 @@ def frequency(text: str) -> dict[str, int]:
     :param text:
     :return:
     """
-    pass
+    total = total_char(text)
+    return {c: (text.count(c) / total) for c in ascii_lowercase}
 
 
 def q_freq(freq_text: dict[str, int]) -> int:
@@ -80,7 +97,7 @@ def q_freq(freq_text: dict[str, int]) -> int:
     :param freq_text: f_c (vue plus haut)
     :return: calcul de Qf
     """
-    pass
+    return sum((fth[c] - freq_text[c]) ** 2 for c in ascii_lowercase)
 
 
 def q_text(text: str) -> int:
@@ -89,7 +106,8 @@ def q_text(text: str) -> int:
     :param text: text a analysé
     :return: quantité
     """
-    pass
+    freq = frequency(text)
+    return q_freq(freq)
 
 
 def crack_cesar(text: str) -> (int, str):
@@ -104,7 +122,14 @@ def crack_cesar(text: str) -> (int, str):
     :param: text chiffré a casser
     :return: on renvoie le couple clef, text déchifré
     """
-    pass
+    qte_min = q_text(text)
+    solution = 0, text
+    for i in range(1, len(ascii_lowercase)):
+        cur_text = cesar_decipher(text, i)
+        if (qte := q_text(cur_text)) < qte_min:
+            qte_min = qte
+            solution = (i, cur_text)
+    return solution
 
 
 """
@@ -140,7 +165,13 @@ def vigenere_cipher(text: str, key: str) -> str:
     :param key: clef utilisé
     :return: text chiffré
     """
-    pass
+    res = ""
+    for i_text, c in enumerate(text):
+        if (i_c := ascii_lowercase.find(c)) != -1:
+            k = ascii_lowercase.find(key[i_text % len(key)])
+            c = ascii_lowercase[(i_c + k) % len(ascii_lowercase)]
+        res += c
+    return res
 
 
 def vigenere_decipher(text: str, key: str) -> str:
@@ -150,4 +181,10 @@ def vigenere_decipher(text: str, key: str) -> str:
     :param key: clef a utilisé
     :return: message déchiffré
     """
-    pass
+    res = ""
+    for i_text, c in enumerate(text):
+        if (i_c := ascii_lowercase.find(c)) != -1:
+            k = ascii_lowercase.find(key[i_text % len(key)])
+            c = ascii_lowercase[(i_c - k) % len(ascii_lowercase)] # il faut juste changer le signe de k
+        res += c
+    return res
