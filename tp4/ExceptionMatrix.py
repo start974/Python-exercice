@@ -53,3 +53,8 @@ class NotMatchSize(ExceptionMatrix):
 
 class NotCompatible(ExceptionMatrix):
     pass
+
+
+class NotSquared(ExceptionMatrix):
+    def __init__(self, mat: "Matrix"):
+        super(NotSquared, self).__init__(f"matrix is not squared {mat.lines=} {mat.colums=}")

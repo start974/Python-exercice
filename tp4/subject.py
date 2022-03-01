@@ -64,17 +64,11 @@ class Matrix:
         return tuple(x for line in self.__data
                      for x in line)
 
-    def __str__(self):
-        return str(self.array_mat)
-
-    def __repr__(self):
-        width = max(map(lambda x: len(str(x)), self.array_simple)) + 2
-        res = f"n:{self.lines}, m:{self.columns}\n"
-        for line in self.array_mat:
-            for val in line:
-                res += str(val).center(width)
-            res += "\n"
-        return res
+    def is_squared(self) -> bool:
+        """
+        vraie si la matrice est carrée
+        """
+        return self.columns == self.lines
 
     def __check_line_in_range(self, i: int) -> None:
         """
@@ -96,6 +90,15 @@ class Matrix:
         if not (0 <= j < self.lines):
             raise OutOfRange(0, self.lines, "Matrix.lines", j)
 
+    def __get_without_check(self, i: int, j: int) -> float:
+        """
+        methode privé de get qui ne check pas la validité de i et j
+        :param i: ligne
+        :param j: colonne
+        :return: valeur trouver
+        """
+        return self.__data[i][j]
+
     def get(self, i: int, j: int) -> float:
         """
         récupère la valeur a la ligne i et a la colonne j
@@ -107,7 +110,16 @@ class Matrix:
         self.__check_line_in_range(i)
         self.__check_column_in_range(j)
 
-        return self.__data[j][i]
+        return self.__get_without_check(i, j)
+
+    def __set_without_check(self, i: int, j: int, val: float) -> None:
+        """
+        methode privé de set qui ne check pas la validité de i et j
+        :param i: ligne
+        :param j: colonne
+        :return: valeur trouver
+        """
+        self.__data[i][j] = val
 
     def set(self, i: int, j: int, val: int) -> None:
         """
@@ -120,7 +132,7 @@ class Matrix:
         self.__check_line_in_range(i)
         self.__check_column_in_range(j)
 
-        self.__data[j][i] = val
+        self.__set_without_check(i, j, val)
 
     def __eq__(self, other: object) -> bool:
         """
@@ -141,7 +153,7 @@ class Matrix:
         :exception OutOfRange si la ligne i n'est pas dans la matrice
         """
         self.__check_line_in_range(i)
-        return [self.__data[i][x] for x in range(self.columns)]
+        return [self.__get_without_check(i, j) for j in range(self.columns)]
 
     def get_column(self, j: int) -> [int]:
         """
@@ -151,7 +163,7 @@ class Matrix:
         :exception OutOfRange si la colonne j n'est pas dans la matrice
         """
         self.__check_column_in_range(j)
-        return [self.__data[x][j] for x in range(self.lines)]
+        return [self.__get_without_check(i, j) for i in range(self.lines)]
 
     def __getitem__(self, key):
         """
@@ -184,10 +196,11 @@ class Matrix:
         """
         if len(line) != self.columns:
             raise NotMatchSize(line, self.columns)
+
         self.__check_line_in_range(i)
 
-        for x in range(self.columns):
-            self.__data[i][x] = line[x]
+        for j, val in enumerate(line):
+            self.__set_without_check(i, j, val)
 
     def set_column(self, j: int, col: [int]) -> None:
         """
@@ -200,8 +213,8 @@ class Matrix:
             raise NotMatchSize(col, self.lines)
         self.__check_column_in_range(j)
 
-        for x in range(self.lines):
-            self.__data[x][j] = col[x]
+        for i, val in enumerate(col):
+            self.__set_without_check(i, j, val)
 
     def __setitem__(self, key: slice, value) -> None:
         """
@@ -241,6 +254,53 @@ class Matrix:
         https://docs.python.org/fr/3/library/copy.html
         """
         return self.copy()
+
+    @staticmethod
+    def from_array_mat(arrays: list[list[float]] | tuple[tuple[float]]) -> "Matrix":
+        """
+        crée une matrice avec un array_matrix
+        :param arrays: array_matrix utilisé
+        :return: matrix object
+        :exception: NotCompatible (si arrays n'as pas une forme de matrice correct)
+        """
+        if not arrays:
+            raise NotCompatible("Arrays is empty")
+        n = len(arrays)
+        m = len(arrays[0])
+        mat = Matrix(n, m)
+        for i, line in enumerate(arrays):
+            if len(line) != m:
+                raise NotCompatible(f"Arrays line {i} has not length {m}")
+            mat[i:] = line
+        return mat
+
+    @staticmethod
+    def from_array_simple(arr: list[float] | tuple[float], n: int, m: int = None) -> "Matrix":
+        """
+        créé une matrice avec un simple array (version inverse de "self.arraysimple"
+        :param arr: tableau ou prendre les valeurs
+        :param n: nombre de lignes
+        :param m: nombre de colones (default=None dans ce cas n = m)
+        :exception: NotCompatible si la taille de l'array
+         ne correspond pas a la taille de la matrice demandé
+        :key: la question a se poser ici est comment trouvé r (dans arr) tel que:
+            mat[i:j] = arr[r]
+        """
+        if m is None:
+            m = n
+
+        if not arr:
+            raise NotCompatible("Arrays is empty")
+        elif n * m != len(arr):
+            raise NotCompatible(f"Arrays size not compatible with {n=} {m=}")
+
+        #
+        mat = Matrix(n, m)
+        for i in range(n):
+            for j in range(m):
+                r = j * n + i
+                mat[i:j] = arr[r]
+        return mat
 
     @staticmethod
     def identity(n: int) -> "Matrix":
@@ -299,6 +359,17 @@ class Matrix:
         self.add(other)
         return self
 
+    def __sub__(self, other: "Matrix") -> "Matrix":
+        """
+        pour pourvoir utiliser self - other
+        :param other: matrice a soustraire
+        :return: soustraction des 2 matrices
+        """
+        if not isinstance(other, Matrix):
+            raise TypeError(f"key cannot be typed: {type(other)} (usage matA += matB)")
+
+        return self + (-1 * other)
+
     def mul_coef(self, k: float) -> None:
         """
         multiliplie la matrice par un coeficient k
@@ -308,42 +379,96 @@ class Matrix:
             for i in range(self.lines):
                 self[i:j] *= k
 
-    def mul_mat(self, other: "Matrix") -> Matrix:
-        """
-        mutiplie 2 matrice entre elle (self * other)
-
-        https://fr.wikipedia.org/wiki/Produit_matriciel
-
-        :param other: 2nd matrice
-        :return: matrice du résultat
-        :raise: NotCompatible if 2 matrix is not compatible
-        """
-        if self.columns != other.lines:
-            raise NotCompatible("line different of column")
-
-        res = Matrix(self.lines, self.columns, 0)
-        for j in range(other.lines):
-            for i in range(self.columns):
-                for k in range(self.lines):
-                    res[i:j] = self[k:i] * other[k:j]
-        return res
-
-    def __rmul__(self, other) -> "Matrix":
+    def __rmul__(self, other: float | int) -> "Matrix":
         """
         implement other * self
-        :param other: matrix or
+        :param other: scalaire a multiplier
         :return:
         """
         match other:
             case float(k) | int(k):
-                # TODO
                 ret = self.copy()
                 ret.mul_coef(k)
                 return ret
 
-            case Matrix():
-                # TODO
-                return other.mult_mat(self)
-
             case _:
-                raise TypeError(f"key cannot be typed: {type(other)} (usage k * mat or mat1 * mat2)")
+                raise TypeError(f"key cannot be typed: {type(other)} (usage k * mat)")
+
+    @staticmethod
+    def mul_mat(matA: "Matrix", matB: "Matrix") -> "Matrix":
+        """
+        mutiplie 2 matrice
+
+        https://fr.wikipedia.org/wiki/Produit_matriciel
+
+        :param matA: 1er matrice
+        :param matB: 1er matrice
+        :return: matrice du résultat
+        :raise: NotCompatible if 2 matrix is not compatible
+        """
+        if matA.columns != matB.lines:
+            raise NotCompatible("line different of column")
+
+        res = Matrix(matB.columns, matA.lines, 0)
+        for j in range(res.lines):
+            for i in range(res.columns):
+                for x1, x2 in zip(matA[i:], matB[:j]):
+                    res[i:j] += x1 * x2
+        return res
+
+    def __mul__(self, other: "Matrix") -> "Matrix":
+        """
+        implement  self 8 other
+        :param other: matrix
+        :return:
+        """
+        if not isinstance(other, Matrix):
+            raise TypeError(f"key cannot be typed: {type(other)} (usage mat1 * mat2)")
+        return Matrix.mul_mat(self, other)
+
+    @staticmethod
+    def pow(mat: "Matrix", n: int) -> "Matrix":
+        """
+        fait la matrice puissance n
+        (ici nous ne cherchons pas avoir la meilleur optimisation)
+        :param mat: matrice a élevé à la puissance
+        :param n: puissance (n>=0)
+        :return: mat ** n
+        :exception: NotSquared: si la matrice n'est pas carrée
+        """
+        if not mat.is_squared():
+            raise NotSquared(mat)
+
+        elif n == 0:
+            return Matrix.identity(mat.columns)
+
+        for i in range(n):
+            mat *= mat
+        return mat
+
+    def __pow__(self, power: int, modulo=None) -> "Matrix":
+        """
+        pour définir la built-in: pow(mat, power) et mat **
+        :param power: puissance a calculter
+        :param modulo: (non utilisé)
+        :return: matrice
+        """
+        return Matrix.pow(self, power)
+
+    def __str__(self):
+        """
+        string representation is string of array mat
+        """
+        return str(self.array_mat)
+
+    def __repr__(self):
+        """
+        printing representation with repr
+        """
+        width = max(map(lambda x: len(str(x)), self.array_simple)) + 2
+        res = f"n:{self.lines}, m:{self.columns}\n"
+        for line in self.array_mat:
+            for val in line:
+                res += str(val).center(width)
+            res += "\n"
+        return res
