@@ -51,6 +51,6 @@ Objective is to implement classical cipher symetric method.
 - Vigenère
     - cipher
     - decipher
-    - 
+
 ### [TP 4](tp3/subject.py): Matrix
 Implement a Matrix class with some basic operations.
