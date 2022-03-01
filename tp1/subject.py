@@ -1,4 +1,4 @@
-from .remove_builtins import *
+from tools.remove_builtins import *
 from typing import TypeVar, Optional, Iterable, Callable
 
 T = TypeVar('T')

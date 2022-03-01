@@ -1,4 +1,4 @@
-from .exceptions import IsNegativeException
+from tp2.exceptions import IsNegativeException
 from typing import TypeVar, Optional, Iterable, Callable
 
 """

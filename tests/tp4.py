@@ -2,6 +2,7 @@ from random import randint
 
 import pytest
 
+# from correction.tp4 import Matrix
 from tp4 import Matrix
 from tp4.ExceptionMatrix import *
 
@@ -38,6 +39,12 @@ def test_lines_columns():
     assert mat.lines == mat.columns == 2
 
 
+def test_is_squares():
+    assert Matrix(3, 3).is_squared()
+    assert Matrix(3).is_squared()
+    assert not Matrix(3, 4).is_squared()
+
+
 def test_arrays():
     assert Matrix(5, 2).array_mat == tuple([tuple([0] * 5)] * 2)
     assert Matrix(5, 2, 10).array_mat == tuple([tuple([10] * 5)] * 2)
@@ -46,12 +53,6 @@ def test_arrays():
 def test_simple():
     assert Matrix(5, 2).array_simple == tuple(0 for _ in range(10))
     assert Matrix(5, 2, 10).array_simple == tuple(10 for _ in range(10))
-
-
-def test_is_squares():
-    assert Matrix(3, 3).is_squared()
-    assert Matrix(3).is_squared()
-    assert not Matrix(3, 4).is_squared()
 
 
 def test_get():
@@ -321,7 +322,7 @@ def test_mul_mat_square():
 
 
 def test_mul_op():
-    mat = matrix(3)
+    mat = Matrix(3)
 
     mat[0:] = [1, 2, 3]
     mat[1:] = [4, 5, 6]
@@ -329,7 +330,7 @@ def test_mul_op():
 
     mat_c = mat.copy()
 
-    mat_r = matrix(3)
+    mat_r = Matrix(3)
     mat_r[0:] = [2, 4, 6]
     mat_r[1:] = [8, 10, 12]
     mat_r[2:] = [14, 16, 18]
@@ -337,13 +338,13 @@ def test_mul_op():
     assert 2 * mat == mat_r
     assert mat == mat_c
 
-    mat_mul = matrix.from_array_mat(dot(mat.array_mat, mat_r.array_mat))
+    mat_mul = Matrix.from_array_mat(dot(mat.array_mat, mat_r.array_mat))
     assert mat * mat_r == mat_mul
     assert mat == mat_c
     assert mat_r == 2 * mat
 
     mat *= mat_r
-    assert mat == mat_mult
+    assert mat == mat_mul
 
 
 def test_mat_pow_id():

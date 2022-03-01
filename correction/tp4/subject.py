@@ -1,5 +1,5 @@
-from .ExceptionMatrix import *
-from tools import TODO
+from tp4.ExceptionMatrix import *
+
 """
 Rappelle sur les visibilité en python:
 self.a: "public"
@@ -8,14 +8,7 @@ https://www.geeksforgeeks.org/private-variables-python/
 
 Nous allons utiliser @property pour faire des getter et des setter
 https://www.programiz.com/python-programming/property
-
-Des TODO(n) dans ce fichier sont laisser remplacer les par la bonnes définition
-- n = k veux dire que c'est faisable en k instructions
-- si n est pas présent alors n = 1
-- si n est None aucune indication est donnée sur le nombres d'instructions nécéssaire 
-pour ne pas influhencer la réponse
 """
-
 
 
 class Matrix:
@@ -35,35 +28,36 @@ class Matrix:
 
         :key: n et m n'as que des getter
         """
-        if TODO():
+        if n <= 0:
             raise NotNegative("n", n)
-        elif TODO():
+        elif m is None:
             m = n
-        elif TODO():
+        elif m <= 0:
             raise NotNegative("m", m)
 
-        # add attributes
-        TODO(3)
+        self.__n = n
+        self.__m = m
+        self.__data = [[val] * n for _ in range(m)]
 
     @property
-    def lines(self) -> int:
+    def lines(self):
         """
         nombre de lignes dans la matrices
         """
-        TODO()
+        return self.__m
 
     @property
-    def columns(self) -> int:
+    def columns(self):
         """
         nombre de colones dans la matrices
         """
-        TODO()
+        return self.__n
 
     def is_squared(self) -> bool:
         """
         vraie si la matrice est carrée
         """
-        TODO()
+        return self.columns == self.lines
 
     @property
     def array_mat(self) -> tuple[tuple[float]]:
@@ -72,35 +66,15 @@ class Matrix:
         :key est une copie des donnée
         :return donné de la matrice
         """
-        # pseudo code:
-        # t = []
-        # for i=0 to self.lines:
-        #   t_line = []
-        #   for j=0 to self.columns:
-        #       t_line.append(self.data at i j)
-        #   t.append(t_line cast to tupple)
-        # return t cast to tupple
-
-        # avec un comprehension:
-        # return tuple(tuple(val for val in line) for line in self.__data)
-        TODO(1)  # 1 avec une comprehension
+        return tuple(tuple(val for val in line) for line in self.__data)
 
     @property
     def array_simple(self) -> tuple[float]:
         """
         renvoie une liste simple de notre matrice
-
         """
-        # pseudo code
-        # t = []
-        # for i=0 to self.lines:
-        #   for j=0 to self.columns:
-        #       t_line.append(self.data at i j)
-        # return t cast to tupple
-
-        # return tuple(x for line in self.__data
-        #                for x in line)
-        TODO()  # 1 avec une comprehension
+        return tuple(x for line in self.__data
+                     for x in line)
 
     def __check_line_in_range(self, i: int) -> None:
         """
@@ -129,7 +103,7 @@ class Matrix:
         :param j: colonne
         :return: valeur trouver
         """
-        TODO()
+        return self.__data[i][j]
 
     def get(self, i: int, j: int) -> float:
         """
@@ -139,8 +113,10 @@ class Matrix:
         :return: valeur trouver
         :exception OutOfRange si i ou j n'est pas dans la matrice
         """
-        # utiliser les méthode privé précédentes
-        TODO(3)
+        self.__check_line_in_range(i)
+        self.__check_column_in_range(j)
+
+        return self.__get_without_check(i, j)
 
     def __set_without_check(self, i: int, j: int, val: float) -> None:
         """
@@ -149,8 +125,7 @@ class Matrix:
         :param j: colonne
         :return: valeur trouver
         """
-        # meme idée que __get_without_check mais change la valeur
-        TODO()
+        self.__data[i][j] = val
 
     def set(self, i: int, j: int, val: int) -> None:
         """
@@ -160,8 +135,10 @@ class Matrix:
         :param val: valeur a changer
         :exception OutOfRange si i ou j n'est pas dans la matrice
         """
-        # meme idée que get mais change la valeur
-        TODO(3)
+        self.__check_line_in_range(i)
+        self.__check_column_in_range(j)
+
+        self.__set_without_check(i, j, val)
 
     def __eq__(self, other: object) -> bool:
         """
@@ -181,9 +158,8 @@ class Matrix:
         :return: ligne
         :exception OutOfRange si la ligne i n'est pas dans la matrice
         """
-        # 1: check si la ligne existe
-        # 2: récupérer la ligne
-        TODO(2)
+        self.__check_line_in_range(i)
+        return [self.__get_without_check(i, j) for j in range(self.columns)]
 
     def get_column(self, j: int) -> [int]:
         """
@@ -192,8 +168,8 @@ class Matrix:
         :return: colonne
         :exception OutOfRange si la colonne j n'est pas dans la matrice
         """
-        # meme idée que get_line
-        TODO(2)
+        self.__check_column_in_range(j)
+        return [self.__get_without_check(i, j) for i in range(self.lines)]
 
     def __getitem__(self, key: slice) -> float | list[float]:
         """
@@ -203,7 +179,6 @@ class Matrix:
         mat[i:] == get_line(i)
         mat[:j] == get_column(j)
         :param key: object slice
-        :return:
         """
         match key:
             case slice(start=int(i), stop=int(j), step=None):
@@ -224,14 +199,13 @@ class Matrix:
         :param line: valeurs à utiliser
         :exception NotMatchSize si la longueur de la liste line ne peut pas inséré
         """
-        if TODO():
+        if len(line) != self.columns:
             raise NotMatchSize(line, self.columns)
 
-        # check i correct
-        TODO()
+        self.__check_line_in_range(i)
 
         for j, val in enumerate(line):
-            TODO()
+            self.__set_without_check(i, j, val)
 
     def set_column(self, j: int, col: [int]) -> None:
         """
@@ -240,13 +214,12 @@ class Matrix:
         :param col: valeurs à utiliser
         :exception NotMatchSize si la longueur de la liste line ne peut pas inséré
         """
-        if TODO():
+        if len(col) != self.lines:
             raise NotMatchSize(col, self.lines)
-
-        TODO()
+        self.__check_column_in_range(j)
 
         for i, val in enumerate(col):
-            TODO()
+            self.__set_without_check(i, j, val)
 
     def __setitem__(self, key: slice, value) -> None:
         """
@@ -272,8 +245,14 @@ class Matrix:
     def copy(self) -> "Matrix":
         """
         revoie une copy de la matrice
+        :return:
         """
-        TODO(6)
+        mat = Matrix(self.columns, self.lines)
+        for j in range(self.lines):
+            for i in range(self.columns):
+                val = self.__get_without_check(i, j)
+                mat.__set_without_check(i, j, val)
+        return mat
 
     def __copy__(self):
         """
@@ -290,16 +269,16 @@ class Matrix:
         :return: matrix object
         :exception: NotCompatible (si arrays n'as pas une forme de matrice correct)
         """
-        if TODO():
+        if not arrays:
             raise NotCompatible("Arrays is empty")
-        n = TODO()
-        m = TODO()
+        n = len(arrays)
+        m = len(arrays[0])
         mat = Matrix(n, m)
         for i, line in enumerate(arrays):
-            if TODO():
+            if len(line) != m:
                 raise NotCompatible(f"Arrays line {i} has not length {m}")
             for j, val in enumerate(line):
-                mat.__set_without_check(TODO(), TODO(), TODO())
+                mat.__set_without_check(i, j, val)
         return mat
 
     @staticmethod
@@ -314,20 +293,21 @@ class Matrix:
         :key: la question a se poser ici est comment trouvé r (dans arr) tel que:
             mat[i:j] = arr[r]
         """
-        if TODO() is None:
+        if m is None:
             m = n
 
         if not arr:
             raise NotCompatible("Arrays is empty")
-        elif TODO():
+        elif n * m != len(arr):
             raise NotCompatible(f"Arrays size not compatible with {n=} {m=}")
 
+        #
         mat = Matrix(n, m)
         for i in range(n):
             for j in range(m):
-                r = TODO()
-                mat.__set_without_check(i, j, TODO())
-        return TODO()
+                r = j * n + i
+                mat.__set_without_check(i, j, arr[r])
+        return mat
 
     @staticmethod
     def identity(n: int) -> "Matrix":
@@ -336,44 +316,27 @@ class Matrix:
         :param n: matrice de taille n x n
         :return: matrice identité
         """
-        TODO(4)
+        mat = Matrix(n, val=0)
+        for i in range(n):
+            mat.__set_without_check(i, i, 1)
+        return mat
 
     def transpose(self) -> None:
         """
         transpose la matrice de la matrice
         """
-
-        def swap(i, j) -> None:
-            """
-            echange les valeur de la matrice des position mat[i:j] vers mat[j:i]
-            :param i: indice de la ligne deviens indice colone
-            :param j: indice de la colone deviens indice de la ligne
-            """
-            # essayer d'abord de réfléchir avec ce code pour échanger a et b
-            # (penser a une ou plusieur variables temporaraire)
-            # a, b = 1, 2
-            # print(f"{a=}, {b=}") # a=1, b=2
-            # TODO
-            # TODO
-            # TODO
-            # print(f"{a=}, {b=}") # a=2, b=1
-
-            # maitenant esssayer dans notre code réel
+        def swap(i, j):
             tmp = self.__get_without_check(i, j)
             self.__set_without_check(
-                TODO(), TODO(),  # indices
-                TODO())  # valeurs
+                i, j,
+                self.__get_without_check(j, i))
             self.__set_without_check(
-                TODO(), TODO(),
-                TODO())
-
-            # en python un swap peut etre fait aussi en utilisant les tupples
-            # (mais nous utiliserons pas ca ici)
-            # a, b = b, a
+                j, i,
+                tmp)
 
         for j in range(self.columns):
             for i in range(j, self.lines):
-                TODO()
+                swap(i, j)
 
     def add(self, other: "Matrix") -> None:
         """
@@ -381,12 +344,14 @@ class Matrix:
         :param other: autre matrice a ajouter
         :exception NotCompatible
         """
-        if TODO(2):
+        if other.lines != self.lines and self.columns != other.columns:
             raise NotCompatible("Size other matrix is not Compatible")
 
         for j in range(self.columns):
             for i in range(self.lines):
-                TODO(2)
+                val = self.__get_without_check(i, j) + \
+                      other.__get_without_check(i, j)
+                self.__set_without_check(i, j, val)
 
     def __add__(self, other: "Matrix") -> "Matrix":
         """
@@ -396,8 +361,9 @@ class Matrix:
         """
         if not isinstance(other, Matrix):
             raise TypeError(f"key cannot be typed: {type(other)} (usage matA + matB)")
-        # bien penser a voir comment réagis self.add et comment une addition elle fonctionne
-        TODO(None)
+        res = self.copy()
+        res.add(other)
+        return res
 
     def __iadd__(self, other: "Matrix") -> "Matrix":
         """
@@ -408,7 +374,6 @@ class Matrix:
         if not isinstance(other, Matrix):
             raise TypeError(f"key cannot be typed: {type(other)} (usage matA += matB)")
 
-        # ici on optimise comment est fait un +=
         self.add(other)
         return self
 
@@ -421,16 +386,17 @@ class Matrix:
         if not isinstance(other, Matrix):
             raise TypeError(f"key cannot be typed: {type(other)} (usage matA += matB)")
 
-        # nous n'optimiseront pas l'espace utiliser pour l'opération
-        TODO()
+        return self + (-1 * other)
 
     def mul_coef(self, k: float) -> None:
         """
         multiliplie la matrice par un coeficient k
         :param k: coeficient utiliser
         """
-        # s'inspriré de add
-        TODO(4)
+        for j in range(self.columns):
+            for i in range(self.lines):
+                val = self.__get_without_check(i, j) * k
+                self.__set_without_check(i, j, val)
 
     def __rmul__(self, other: float | int) -> "Matrix":
         """
@@ -440,8 +406,9 @@ class Matrix:
         """
         match other:
             case float(k) | int(k):
-                # comme add bien penser a au modification des matrices utiliser
-                TODO(3)
+                ret = self.copy()
+                ret.mul_coef(k)
+                return ret
 
             case _:
                 raise TypeError(f"key cannot be typed: {type(other)} (usage k * mat)")
@@ -458,19 +425,14 @@ class Matrix:
         :return: matrice du résultat
         :raise: NotCompatible if 2 matrix is not compatible
         """
-        if TODO():
+        if matA.columns != matB.lines:
             raise NotCompatible("line different of column")
 
-        res = Matrix(TODO(), TODO(), 0)
-        TODO(4) # ne chercher pas a le faire en 4 instructions
-        # indication:
-        # - il vous faudra au moins 3 bloucle for
-        # - un zip peut etre utile pour simpliser le code
-        # - utiliser mat[i:j] ou mat[i:] ou mat[i:j] peut aussi simplifier le code
-        #   (ne cherchons pas a désactiver des checks)
-
-        # il faut bien réfléchir sur comment se déroule la multiplication de matrice
-        # bonne chance !
+        res = Matrix(matB.columns, matA.lines, 0)
+        for j in range(res.lines):
+            for i in range(res.columns):
+                for x1, x2 in zip(matA[i:], matB[:j]):
+                    res[i:j] += x1 * x2
         return res
 
     def __mul__(self, other: "Matrix") -> "Matrix":
@@ -493,15 +455,15 @@ class Matrix:
         :return: mat ** n
         :exception: NotSquared: si la matrice n'est pas carrée
         """
-        if TODO():
+        if not mat.is_squared():
             raise NotSquared(mat)
 
-        elif TODO():
+        elif n == 0:
             return Matrix.identity(mat.columns)
 
-        TODO(3)
-        # question a se poser:
-        # a = m * m: modifie m ?
+        for i in range(n):
+            mat *= mat
+        return mat
 
     def __pow__(self, power: int, modulo=None) -> "Matrix":
         """
