@@ -24,12 +24,12 @@ $ pipenv run pytest tests/tp*.py
 
 ## TP
 
-### [TP1](tp1/subject.py) -- My Builtins functions
+### [TP 1](tp1/subject.py): My Builtins functions
 
 Objectives recreate some pythons [builtins](https://docs.python.org/3/library/functions.html) functions. The subject
 file is [tp1/subject.py](tp1/subject_tmp.py)
 
-### [TP2](tp2/subject.py) -- Base converter
+### [TP 2](tp2/subject.py): Base converter
 
 Objectives is to convert positives number between base 10, 16, 2
 
@@ -40,7 +40,7 @@ Make function to convert :
 - binary -> Base 10
 - hexadecimal -> Base 10
 
-### [TP3](tp3/subject.py) -- Cipher
+### [TP 3](tp3/subject.py): Cipher
 
 Objective is to implement classical cipher symetric method.
 
@@ -51,3 +51,6 @@ Objective is to implement classical cipher symetric method.
 - Vigenère
     - cipher
     - decipher
+    - 
+### [TP 4](tp3/subject.py): Matrix
+Implement a Matrix class with some basic operations.

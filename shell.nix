@@ -15,5 +15,6 @@ stdenv.mkDerivation {
     export PIPENV_ACTIVE=1
     export PYTHONPATH="$VIRTUAL_ENV/${pkgs.python3.sitePackages}:$PYTHONPATH"
     export PATH="$VIRTUAL_ENV/bin:$PATH"
+    pipen shell
   '';
 }

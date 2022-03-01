@@ -1,3 +1,4 @@
+#from correction.tp1.subject import *
 from tp1.subject import *
 from builtins import *
 
